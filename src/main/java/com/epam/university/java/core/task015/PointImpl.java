@@ -1,5 +1,6 @@
 package com.epam.university.java.core.task015;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class PointImpl implements Point {

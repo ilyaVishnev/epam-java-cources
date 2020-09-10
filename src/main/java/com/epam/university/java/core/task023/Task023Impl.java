@@ -6,8 +6,8 @@ import java.util.regex.Pattern;
 public class Task023Impl implements Task023 {
     @Override
     public String extract(String phoneString) {
-        if (!phoneString.matches("(\\+?)\\d(\\s?)(\\(?)(\\s?)\\d{3}" +
-                "(\\s?)(\\)?)(\\s?)\\d{3}(\\s?)-?\\d{2}(\\s?)-?\\d{2}")
+        if (!phoneString.matches("(\\+?)\\d(\\s?)(\\(?)(\\s?)\\d{3}"
+                + "(\\s?)(\\)?)(\\s?)\\d{3}(\\s?)-?\\d{2}(\\s?)-?\\d{2}")
         ) {
             throw new IllegalArgumentException();
         }

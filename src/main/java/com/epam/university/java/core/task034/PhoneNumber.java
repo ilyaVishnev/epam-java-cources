@@ -1,5 +1,7 @@
 package com.epam.university.java.core.task034;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Phone number model.
  */

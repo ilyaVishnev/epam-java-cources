@@ -8,6 +8,14 @@ public class PointImpl implements Point {
     private double x;
     private double y;
 
+    public PointImpl() {
+    }
+
+    public PointImpl(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
     @Override
     public double getX() {
         return x;

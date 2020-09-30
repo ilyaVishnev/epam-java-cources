@@ -24,7 +24,7 @@ public class GraphImpl implements Graph {
         if (graph.get(from) != null) {
             graph.get(from).add(to);
         } else {
-            graph.put(from, new HashSet<>(Arrays.asList(to)));
+            throw new IllegalArgumentException();
         }
         if (graph.get(to) != null) {
             graph.get(to).add(from);
@@ -53,6 +53,9 @@ public class GraphImpl implements Graph {
      */
     @Override
     public void removeEdge(int from, int to) {
+        if (graph.get(from) == null || !graph.get(from).contains(to)) {
+            throw new IllegalArgumentException();
+        }
         graph.get(from).remove(to);
         graph.get(to).remove(from);
     }
@@ -65,6 +68,9 @@ public class GraphImpl implements Graph {
      */
     @Override
     public Collection<Integer> getAdjacent(int from) {
+        if (graph.get(from) == null) {
+            throw new IllegalArgumentException();
+        }
         Set<Integer> alreadyExist = new HashSet<>(Arrays.asList(from));
         return searching(from, alreadyExist);
     }

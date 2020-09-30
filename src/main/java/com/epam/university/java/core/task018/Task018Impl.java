@@ -17,6 +17,9 @@ public class Task018Impl implements Task018 {
      */
     @Override
     public boolean isAnnotationPresent(Object toCheck, Class<?> annotationToFind) {
+        if (toCheck == null || annotationToFind == null) {
+            throw new IllegalArgumentException();
+        }
         Class c = toCheck.getClass();
         boolean t;
         Field[] fields = c.getDeclaredFields();

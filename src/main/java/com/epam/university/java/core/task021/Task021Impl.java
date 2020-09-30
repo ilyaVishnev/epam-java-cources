@@ -19,6 +19,9 @@ public class Task021Impl implements Task021 {
 
     @Override
     public Point calculate(Collection<Point> minePositions) {
+        if (minePositions == null || minePositions.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         List<Point> points = new ArrayList<>(minePositions);
         Point a = points.get(0);
         Point b = points.get(1);

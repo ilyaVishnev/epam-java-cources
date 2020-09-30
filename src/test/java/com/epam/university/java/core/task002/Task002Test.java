@@ -182,11 +182,33 @@ public class Task002Test {
         instance.join(source, ", ");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void joinWithCollectionContainsNulls() throws Exception {
+        final String[] source = {null, null};
+        instance.join(source, " ");
+    }
+
+
     @Test
     public void joinCheck() throws Exception {
         final String[] source = {"Hello", "World"};
         assertEquals("Error in join function",
                 "Hello, World",
                 instance.join(source, ", "));
+    }
+
+    @Test
+    public void joinCheckSomeWords() throws Exception {
+        final String[] source = {"Hello", "World", "this", "is", "my", "test"};
+        assertEquals("Error in join function",
+                "Hello, World, this, is, my, test",
+                instance.join(source, ", "));
+    }
+
+    @Test
+    public void rightWithLongSeparator() throws Exception {
+        assertEquals("Error in right function",
+                "World",
+                instance.right("Hello  ,  World", "  ,  "));
     }
 }

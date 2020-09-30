@@ -23,6 +23,12 @@ public class Task011Test {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void getLastNameWithNullArray() throws Exception {
+        final String[] collection = null;
+        instance.getLastName(collection);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void getLastNameWithEmptyArray() throws Exception {
         final String[] collection = {};
         instance.getLastName(collection);
@@ -89,6 +95,12 @@ public class Task011Test {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void getLastNameWithNullArrayList() throws Exception {
+        final ArrayList<String> collection = null;
+        instance.getLastName(collection);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void getLastNameWithEmptyArrayList() throws Exception {
         final ArrayList<String> collection = new ArrayList<>();
         instance.getLastName(collection);
@@ -152,6 +164,12 @@ public class Task011Test {
                 "Lisa",
                 lastName
         );
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getLastNameWithNullLinkedList() throws Exception {
+        final LinkedList<String> collection = null;
+        instance.getLastName(collection);
     }
 
     @Test(expected = IllegalArgumentException.class)

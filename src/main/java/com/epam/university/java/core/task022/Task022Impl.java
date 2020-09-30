@@ -14,6 +14,9 @@ public class Task022Impl implements Task022 {
      */
     @Override
     public int maxSum(Collection<Integer> numbers) {
+        if (numbers == null || numbers.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         List<Integer> integers = new ArrayList<>(numbers);
         Integer max = integers.stream().mapToInt(i -> i.intValue()).sum();
         Integer min = Integer.MAX_VALUE;

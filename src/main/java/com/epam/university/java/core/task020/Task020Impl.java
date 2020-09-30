@@ -9,6 +9,9 @@ public class Task020Impl implements Task020 {
 
     @Override
     public int calculate(Collection<String> stones) {
+        if (stones == null || stones.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         List<String> myStones = new ArrayList<>(stones);
         List<Character> chars = new ArrayList<>();
         List<Character> prev = Arrays.asList(myStones.get(0).chars()

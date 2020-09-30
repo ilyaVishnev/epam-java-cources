@@ -1,6 +1,7 @@
 package com.epam.university.java.core.task017;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class Task017Impl implements Task017 {
@@ -12,6 +13,9 @@ public class Task017Impl implements Task017 {
      * @return formatted string
      */
     public String formatString(Object... args) {
+        if (args.length == 0 || Arrays.asList(args).contains(null)) {
+            throw new IllegalArgumentException();
+        }
         return String.format("You know %s, %s!", args[0], args[1]);
     }
 
@@ -22,6 +26,9 @@ public class Task017Impl implements Task017 {
      * @return formatted string
      */
     public String formatNumbers(Object... args) {
+        if (args.length == 0 || Arrays.asList(args).contains(null)) {
+            throw new IllegalArgumentException();
+        }
         String format = "";
         String str = "";
         if (args[0] instanceof Double) {
@@ -48,6 +55,9 @@ public class Task017Impl implements Task017 {
      * @return formatted string
      */
     public String formatDates(Object... args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException();
+        }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.dd.MM");
         return dateFormat.format(args[0]);
     }

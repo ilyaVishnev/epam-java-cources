@@ -20,6 +20,9 @@ public class Task010Impl implements Task010 {
      */
     @Override
     public Map<String, Integer> countWordNumbers(File source) {
+        if (source == null) {
+            throw new IllegalArgumentException();
+        }
         List<String> text = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(source));) {
             String s;

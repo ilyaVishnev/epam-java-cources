@@ -68,7 +68,7 @@ public class Task003Impl implements Task003 {
      */
     @Override
     public String[] filter(String[] source, FilteringCondition condition) {
-        if (source == null || source.length == 0 || condition == null) {
+        if (source == null || condition == null) {
             throw new IllegalArgumentException();
         }
         return Arrays.stream(source).filter(x -> condition.isValid(x)).toArray(String[]::new);
@@ -84,7 +84,7 @@ public class Task003Impl implements Task003 {
      */
     @Override
     public String[] removeElements(String[] source, String[] toRemote) {
-        if (source == null || toRemote.length == 0 || source == null || toRemote.length == 0) {
+        if (source == null || toRemote == null || source == null || toRemote.length == 0) {
             throw new IllegalArgumentException();
         }
         List<String> sourceList = new ArrayList<String>(Arrays.asList(source));
@@ -102,7 +102,7 @@ public class Task003Impl implements Task003 {
      */
     @Override
     public String[] map(String[] source, MappingOperation operation) {
-        if (source == null || source.length == 0 || operation == null) {
+        if (source == null || operation == null) {
             throw new IllegalArgumentException();
         }
         return Arrays.stream(source).map(x -> operation.map(x)).toArray(String[]::new);
@@ -118,7 +118,7 @@ public class Task003Impl implements Task003 {
      */
     @Override
     public String[] flatMap(String[] source, FlatMappingOperation operation) {
-        if (source == null || source.length == 0 || operation == null) {
+        if (source == null || operation == null) {
             throw new IllegalArgumentException();
         }
         return Arrays.stream(source).flatMap(x -> Arrays.stream(operation.flatMap(x)))

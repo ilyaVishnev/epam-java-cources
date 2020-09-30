@@ -10,6 +10,9 @@ import java.util.List;
 public class Task013Impl implements Task013 {
     @Override
     public Figure invokeActions(Figure figure, Collection<FigureAction> actions) {
+        if (figure == null || actions == null || actions.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         for (FigureAction figureAction : actions) {
             figureAction.run(figure);
         }
@@ -18,6 +21,9 @@ public class Task013Impl implements Task013 {
 
     @Override
     public boolean isConvexPolygon(Figure figure) {
+        if (figure == null) {
+            throw new IllegalArgumentException();
+        }
         boolean convex = true;
         Queue<Vertex> expiriencePoints = getPairs(figure);
         while (!expiriencePoints.isEmpty()) {
@@ -50,12 +56,12 @@ public class Task013Impl implements Task013 {
                     / (pointExpOne.getX() - pointExpTwo.getX());
             int xCros;
             int yCros;
-            if (Math.abs(kOne) == 0 && Math.abs(kTwo) == 0) {
+            if (Math.abs(kOne) == 0 && Math.abs(kTwo) == 0
+                    || (pointOne.getX() == pointTwo.getX()
+                    && pointExpOne.getX() == pointExpTwo.getX())
+                    || (pointOne.getY() == pointTwo.getY()
+                    && pointExpOne.getY() == pointExpTwo.getY())) {
                 continue;
-            }
-            if (Double.isNaN(bOne) && Double.isNaN(bTwo)
-                    && pointOne.getX() == pointExpOne.getX()) {
-                return true;
             }
             if (Double.isNaN(bOne) || Double.isInfinite(bOne)) {
                 xCros = pointOne.getX();
@@ -75,8 +81,8 @@ public class Task013Impl implements Task013 {
             int maxY2 = Math.max(pointExpOne.getY(), pointExpTwo.getY());
             int minY1 = Math.min(pointOne.getY(), pointTwo.getY());
             int minY2 = Math.min(pointExpOne.getY(), pointExpTwo.getY());
-            if ((xCros < minX1 || xCros > maxX1) && (xCros >= minX2 && xCros <= maxX2)
-                    && (yCros < minY1 || yCros > maxY1) && (yCros >= minY2 && yCros <= maxY2)) {
+            if ((xCros < minX1 || xCros > maxX1) && (xCros > minX2 && xCros < maxX2)
+                    && (yCros < minY1 || yCros > maxY1) && (yCros > minY2 && yCros < maxY2)) {
                 return true;
             }
         }

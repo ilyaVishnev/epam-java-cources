@@ -5,8 +5,11 @@ import java.util.ArrayList;
 public class FigureFactoryImpl implements FigureFactory {
     @Override
     public Figure newInstance(int vertexCount) {
+        if (vertexCount < 3) {
+            throw new IllegalArgumentException();
+        }
         FigureImpl figure = new FigureImpl();
-        figure.setVertices(new ArrayList<>(vertexCount));
+        figure.setSize(vertexCount);
         return figure;
     }
 

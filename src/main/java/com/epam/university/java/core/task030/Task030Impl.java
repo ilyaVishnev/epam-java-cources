@@ -12,6 +12,9 @@ import java.util.List;
 public class Task030Impl implements Task030 {
     @Override
     public int daysBetweenDates(LocalDate dateStart, LocalDate dateEnd) {
+        if (dateStart == null || dateEnd == null) {
+            throw new IllegalArgumentException();
+        }
         return Math.abs((int) Duration.between(dateEnd.atStartOfDay(), dateStart
                 .atStartOfDay()).toDays());
     }

@@ -21,6 +21,9 @@ public class Task025Impl implements Task025 {
      */
     @Override
     public int getAmountOfAlteredLetters(String sourceMessage) {
+        if (sourceMessage == null) {
+            throw new IllegalArgumentException();
+        }
         if (sourceMessage.equals("")) {
             return 0;
         }

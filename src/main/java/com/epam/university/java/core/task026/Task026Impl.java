@@ -4,6 +4,9 @@ public class Task026Impl implements Task026 {
 
     @Override
     public String encrypt(String sourceString, int shift) {
+        if (sourceString == null) {
+            throw new IllegalArgumentException();
+        }
         char[] sourceArray = sourceString.toCharArray();
         for (int i = 0; i < sourceArray.length; i++) {
             if (String.valueOf(sourceArray[i]).matches("[^_\\s\\p{Punct}]")) {

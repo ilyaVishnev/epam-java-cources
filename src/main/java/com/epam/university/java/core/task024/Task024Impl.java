@@ -20,6 +20,9 @@ public class Task024Impl implements Task024 {
      */
     @Override
     public Collection<String> getWordsCount(String source) {
+        if (source == null) {
+            throw new IllegalArgumentException();
+        }
         List<String> res = new ArrayList<>();
         String[] sourceArray = source.split("");
         if (source.equals("")) {

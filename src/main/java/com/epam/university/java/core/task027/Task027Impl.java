@@ -1,12 +1,12 @@
 package com.epam.university.java.core.task027;
 
-import java.util.List;
-import java.util.Arrays;
 import java.util.Set;
-import java.util.ArrayList;
+import java.util.TreeSet;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class Task027Impl implements Task027 {
@@ -37,10 +37,13 @@ public class Task027Impl implements Task027 {
      */
     @Override
     public Collection<Integer> extract(String sourceString) {
+        if (sourceString == null) {
+            throw new IllegalArgumentException();
+        }
         if (sourceString.equals("") || sourceString.split("")[0].equals("0")) {
             return new ArrayList<>();
         }
-        Set<Integer> res = new HashSet<>();
+        Set<Integer> res = new TreeSet<>();
         String[] sourceArray = sourceString.split("");
         List<String> next = new ArrayList<>();
         List<String> prev = new ArrayList<>();

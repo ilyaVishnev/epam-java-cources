@@ -1,4 +1,5 @@
 package com.epam.university.java.project.core.cdi.bean;
+
 import com.epam.university.java.project.core.cdi.structure.StructureDefinition;
 
 public class BeanPropertyDefinitionImpl implements BeanPropertyDefinition {

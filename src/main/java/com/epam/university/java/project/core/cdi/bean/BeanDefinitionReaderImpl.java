@@ -1,4 +1,5 @@
 package com.epam.university.java.project.core.cdi.bean;
+
 import com.epam.university.java.project.core.cdi.io.Resource;
 import org.w3c.dom.Document;
 

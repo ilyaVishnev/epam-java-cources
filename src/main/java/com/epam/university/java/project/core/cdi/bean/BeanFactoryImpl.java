@@ -22,7 +22,7 @@ import com.epam.university.java.project.core.state.machine.manager.StateMachineM
 import com.epam.university.java.project.service.BookDao;
 import com.epam.university.java.project.service.BookDaoXmlImpl;
 import com.epam.university.java.project.service.StateMachineManagerImpl;
-import org.reflections.Reflections;
+
 
 public class BeanFactoryImpl implements BeanFactory {
 

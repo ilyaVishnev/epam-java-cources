@@ -8,9 +8,10 @@ import java.net.Socket;
 public class ClientImpl implements Client {
 
     private Socket socket;
-    private PrintWriter out;
+    private volatile PrintWriter out;
 
     public ClientImpl() {
+
     }
 
     @Override
@@ -21,10 +22,10 @@ public class ClientImpl implements Client {
     @Override
     public void start() {
         try {
-            this.socket = new Socket("localhost", 5000);
+            socket = new Socket("localhost", 12000);
             out = new PrintWriter(new OutputStreamWriter(socket
                     .getOutputStream()), true);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             System.out.println();
         }
     }
@@ -32,10 +33,16 @@ public class ClientImpl implements Client {
     @Override
     public void stop() {
         try {
-            out.close();
-            socket.close();
-        } catch (IOException ex) {
+            if (out != null) {
+                out.close();
+            }
+            if (socket != null) {
+                socket.close();
+            }
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 }
+
+

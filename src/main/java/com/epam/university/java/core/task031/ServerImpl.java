@@ -1,11 +1,17 @@
 package com.epam.university.java.core.task031;
 
+import javax.net.ServerSocketFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketImpl;
+import java.net.SocketOption;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class ServerImpl implements Server {
 
@@ -13,19 +19,42 @@ public class ServerImpl implements Server {
     private BufferedReader in;
     private volatile boolean stop = false;
     private volatile ArrayDeque<String> message = new ArrayDeque<>();
-    private volatile ArrayDeque<Socket> sockets = new ArrayDeque<>();
+    private volatile List<Socket> sockets = new ArrayList<>();
     private int index = 0;
+    private Listener listener = new Listener();
 
+    /**
+     * constructor.
+     */
     public ServerImpl() {
+        try {
+            this.serverSocket = new ServerSocket(12000);
+        } catch (Exception ex) {
+            System.out.println();
+        }
     }
 
     @Override
     public String readMessage() {
         try {
-            while (!sockets.isEmpty()) {
-                Reader reader = new Reader(sockets.poll());
-                reader.start();
-                reader.join();
+            Thread.sleep(100);
+            Iterator<Socket> iterator = sockets.iterator();
+            while (iterator.hasNext()) {
+                try {
+                    in = new BufferedReader(new InputStreamReader(iterator.next()
+                            .getInputStream()));
+                    try {
+                        String input;
+                        while (in.ready()) {
+                            message.add(in.readLine());
+                        }
+                        in.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    System.out.println();
+                }
             }
         } catch (Exception ex) {
             System.out.println();
@@ -38,26 +67,20 @@ public class ServerImpl implements Server {
 
     @Override
     public void start() {
-        try {
-            this.serverSocket = new ServerSocket(5000);
-            new Listener().start();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        listener.start();
     }
 
     @Override
     public void stop() {
+        stop = true;
         try {
-            for (Socket socket : sockets) {
-                socket.close();
+            if (serverSocket != null) {
+                serverSocket.close();
             }
-            serverSocket.close();
             stop = true;
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             System.out.println();
         }
-
     }
 
     class Listener extends Thread {
@@ -66,7 +89,8 @@ public class ServerImpl implements Server {
         public void run() {
             try {
                 while (!stop) {
-                    sockets.add(serverSocket.accept());
+                    Socket socket = serverSocket.accept();
+                    sockets.add(socket);
                 }
             } catch (Exception e) {
                 System.out.println();

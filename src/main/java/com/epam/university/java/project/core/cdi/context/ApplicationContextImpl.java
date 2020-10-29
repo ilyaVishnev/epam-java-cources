@@ -2,17 +2,18 @@ package com.epam.university.java.project.core.cdi.context;
 
 import com.epam.university.java.project.core.cdi.bean.BeanDefinitionReader;
 import com.epam.university.java.project.core.cdi.bean.BeanFactory;
+import com.epam.university.java.project.core.cdi.bean.BeanFactoryImpl;
 import com.epam.university.java.project.core.cdi.io.Resource;
 
 import java.util.Collection;
 
 public class ApplicationContextImpl implements ApplicationContext {
 
-    private BeanFactory factory;
+    private BeanFactoryImpl factory;
     private BeanDefinitionReader reader;
 
     public ApplicationContextImpl(BeanDefinitionReader reader,
-                                  BeanFactory factory) {
+                                  BeanFactoryImpl factory) {
         this.reader = reader;
         this.factory = factory;
     }
@@ -39,6 +40,10 @@ public class ApplicationContextImpl implements ApplicationContext {
 
     @Override
     public <T> T getBean(String beanName, Class<T> beanClass) {
-        return factory.getBean(beanName, beanClass);
+        T t = factory.getBean(beanName, beanClass);
+        if (factory.isRuntimeExc()) {
+            throw new RuntimeException();
+        }
+        return t;
     }
 }

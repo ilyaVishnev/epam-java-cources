@@ -45,6 +45,7 @@ public class BeanFactoryImpl implements BeanFactory {
             + File.separator + "structure";
     private URLClassLoader loader1;
     private Map cash = new HashMap<>();
+    private boolean runtimeExc = false;
 
     /**
      * constructor.
@@ -115,16 +116,27 @@ public class BeanFactoryImpl implements BeanFactory {
                                 field.set(t, stringCollection);
                                 break;
                             case "stringMap":
-                                MapDefinition mapDefinition =
-                                        (MapDefinition) bean.getProperties().stream()
-                                                .filter(p -> p.getName()
-                                                        .equals("stringMap")).findFirst().get()
-                                                .getData();
-                                Map<String, String> stringMap =
-                                        mapDefinition.getValues().stream()
-                                                .collect(Collectors
-                                                        .toMap(k -> k.getKey(), v -> v.getValue()));
-                                field.set(t, stringMap);
+                                Optional<BeanPropertyDefinition> stringMapProperty = bean
+                                        .getProperties().stream()
+                                        .filter(p -> p.getName()
+                                                .equals("stringMap")).findFirst();
+                                if (stringMapProperty.isPresent()) {
+                                    MapDefinition mapDefinition = (MapDefinition) stringMapProperty
+                                            .get()
+                                            .getData();
+                                    Optional<MapDefinition.MapEntryDefinition> mapEntryDefinition =
+                                            mapDefinition
+                                            .getValues().stream().filter(m -> m.getRef() != null)
+                                                    .findFirst();
+                                    if (mapEntryDefinition.isPresent()) {
+                                        runtimeExc = true;
+                                    }
+                                    Map<String, String> stringMap = mapDefinition
+                                            .getValues().stream()
+                                            .collect(Collectors
+                                                    .toMap(k -> k.getKey(), v -> v.getValue()));
+                                    field.set(t, stringMap);
+                                }
                                 break;
                             case "objectMap":
                                 MapDefinition mapDefinitionObj =
@@ -212,29 +224,45 @@ public class BeanFactoryImpl implements BeanFactory {
                                 field.set(result, getBean("singletonBean"));
                                 break;
                             case "stringCollection":
-                                ListDefinition listDefinition = (ListDefinition) bean
+                                Optional<BeanPropertyDefinition> stringCollectionProperty = bean
                                         .getProperties().stream()
                                         .filter(p -> p.getName().equals("stringCollection"))
-                                        .findFirst().get()
-                                        .getData();
-                                Collection<String> stringCollection = listDefinition
-                                        .getItems().stream()
-                                        .map(l -> l.getValue())
-                                        .collect(Collectors.toList());
-                                field.set(t, stringCollection);
+                                        .findFirst();
+                                if (stringCollectionProperty.isPresent()) {
+                                    ListDefinition listDefinition = (ListDefinition)
+                                            stringCollectionProperty
+                                            .get()
+                                            .getData();
+                                    Collection<String> stringCollection = listDefinition
+                                            .getItems().stream()
+                                            .map(l -> l.getValue())
+                                            .collect(Collectors.toList());
+                                    field.set(t, stringCollection);
+                                }
                                 break;
                             case "stringMap":
-                                MapDefinition mapDefinition = (MapDefinition) bean
+                                Optional<BeanPropertyDefinition> stringMapProperty = bean
                                         .getProperties().stream()
                                         .filter(p -> p.getName()
-                                                .equals("stringMap")).findFirst()
-                                        .get()
-                                        .getData();
-                                Map<String, String> stringMap = mapDefinition
-                                        .getValues().stream()
-                                        .collect(Collectors
-                                                .toMap(k -> k.getKey(), v -> v.getValue()));
-                                field.set(t, stringMap);
+                                                .equals("stringMap")).findFirst();
+                                if (stringMapProperty.isPresent()) {
+                                    MapDefinition mapDefinition = (MapDefinition)
+                                            stringMapProperty
+                                            .get()
+                                            .getData();
+                                    Optional<MapDefinition.MapEntryDefinition>
+                                            mapEntryDefinition = mapDefinition
+                                            .getValues().stream().filter(m -> m.getRef() != null)
+                                            .findFirst();
+                                    if (mapEntryDefinition.isPresent()) {
+                                        runtimeExc = true;
+                                    }
+                                    Map<String, String> stringMap = mapDefinition
+                                            .getValues().stream()
+                                            .collect(Collectors
+                                                    .toMap(k -> k.getKey(), v -> v.getValue()));
+                                    field.set(t, stringMap);
+                                }
                                 break;
                             case "objectMap":
                                 MapDefinition mapDefinitionObj = (MapDefinition) bean
@@ -382,5 +410,9 @@ public class BeanFactoryImpl implements BeanFactory {
             ex.printStackTrace();
         }
         return result;
+    }
+
+    public boolean isRuntimeExc() {
+        return runtimeExc;
     }
 }

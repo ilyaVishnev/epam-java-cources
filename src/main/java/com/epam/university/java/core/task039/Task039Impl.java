@@ -14,21 +14,22 @@ public class Task039Impl implements Task039 {
 
     private Map<String, List<Map.Entry<String, Integer>>> graph = new TreeMap<>();
     private Map<Character, String> result = new TreeMap<>();
+    private Comparator<Map.Entry<String, Integer>> comparator = new Comparator
+            <Map.Entry<String, Integer>>() {
+        @Override
+        public int compare(Map.Entry<String, Integer> o1,
+                           Map.Entry<String, Integer> o2) {
+            return o1.getValue() - o2.getValue() == 0
+                    ? o2.getKey().compareTo(o1.getKey())
+                    : o1.getValue() - o2.getValue();
+        }
+    };
+    private Map<String, Integer> strFrequencies = new TreeMap<>();
 
     @Override
     public Map<Character, String> getEncoding(Map<Character, Integer> charFrequencies) {
-        Map<String, Integer> strFrequencies = new TreeMap<>(charFrequencies.entrySet().stream()
+        strFrequencies = new TreeMap<>(charFrequencies.entrySet().stream()
                 .collect(Collectors.toMap(x -> String.valueOf(x.getKey()), y -> y.getValue())));
-        Comparator<Map.Entry<String, Integer>> comparator = new Comparator
-                <Map.Entry<String, Integer>>() {
-            @Override
-            public int compare(Map.Entry<String, Integer> o1,
-                               Map.Entry<String, Integer> o2) {
-                return o1.getValue() - o2.getValue() == 0
-                        ? o2.getKey().compareTo(o1.getKey())
-                        : o1.getValue() - o2.getValue();
-            }
-        };
         Queue<Map.Entry<String, Integer>> queue = new ArrayDeque<>(strFrequencies.entrySet()
                 .stream().sorted(comparator).collect(Collectors.toCollection(ArrayDeque::new)));
         fillGraph(queue, comparator);
@@ -51,8 +52,17 @@ public class Task039Impl implements Task039 {
         }
         Map.Entry<String, Integer> left = list.get(0);
         Map.Entry<String, Integer> rigth = list.get(1);
-        binaryWay(left.getKey(), binary + "0");
-        binaryWay(rigth.getKey(), binary + "1");
+        String first = "0";
+        String sec = "1";
+        if (left.getKey().length() == 1
+                && rigth.getKey().length() == 1
+                && strFrequencies.get(left.getKey())
+                == strFrequencies.get(rigth.getKey())) {
+            first = "1";
+            sec = "0";
+        }
+        binaryWay(left.getKey(), binary + first);
+        binaryWay(rigth.getKey(), binary + sec);
     }
 
     private void fillGraph(Queue<Map.Entry<String, Integer>> queue,
@@ -93,19 +103,9 @@ public class Task039Impl implements Task039 {
 
     @Override
     public String getEncodedString(Map<Character, Integer> charFrequencies, String string) {
-        Map<String, Integer> strFrequencies = new TreeMap<>(charFrequencies.entrySet()
+        strFrequencies = new TreeMap<>(charFrequencies.entrySet()
                 .stream().collect(Collectors
                         .toMap(x -> String.valueOf(x.getKey()), y -> y.getValue())));
-        Comparator<Map.Entry<String, Integer>> comparator = new Comparator
-                <Map.Entry<String, Integer>>() {
-            @Override
-            public int compare(Map.Entry<String, Integer> o1,
-                               Map.Entry<String, Integer> o2) {
-                return o1.getValue() - o2.getValue() == 0
-                        ? o1.getKey().compareTo(o2.getKey())
-                        : o1.getValue() - o2.getValue();
-            }
-        };
         Queue<Map.Entry<String, Integer>> queue = new ArrayDeque<>(strFrequencies.entrySet()
                 .stream().sorted(comparator).collect(Collectors.toCollection(ArrayDeque::new)));
         fillGraph(queue, comparator);

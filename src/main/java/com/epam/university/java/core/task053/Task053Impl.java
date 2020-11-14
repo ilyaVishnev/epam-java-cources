@@ -26,57 +26,63 @@ public class Task053Impl implements Task053 {
         }
         boolean startNumber = false;
         String[] inputArr = input.split("");
-        for (String n : inputArr) {
-            switch (n) {
-                case "+":
-                case "-":
-                case "^":
-                case "*":
-                case "/":
-                case "(":
-                    while (true) {
-                        String lastStackElement = stack.isEmpty()
-                                ? "" : stack.getFirst();
-                        if (!lastStackElement.equals("(")
-                                && !lastStackElement.equals("")
-                                && precedence.get(lastStackElement) >= precedence
-                                .get(n)) {
-                            polishNotation.addLast(stack.pollFirst());
-                        } else {
-                            stack.addFirst(n);
-                            break;
+        double result = 0;
+        try {
+            for (String n : inputArr) {
+                switch (n) {
+                    case "+":
+                    case "-":
+                    case "^":
+                    case "*":
+                    case "/":
+                    case "(":
+                        while (true) {
+                            String lastStackElement = stack.isEmpty()
+                                    ? "" : stack.getFirst();
+                            if (!lastStackElement.equals("(")
+                                    && !lastStackElement.equals("")
+                                    && precedence.get(lastStackElement) >= precedence
+                                    .get(n)) {
+                                polishNotation.addLast(stack.pollFirst());
+                            } else {
+                                stack.addFirst(n);
+                                break;
+                            }
+                            lastStackElement = stack.isEmpty()
+                                    ? "" : stack.getFirst();
                         }
-                        lastStackElement = stack.isEmpty()
-                                ? "" : stack.getFirst();
-                    }
-                    startNumber = false;
-                    break;
-                case ")":
-                    String lastStackElement = stack.pollFirst();
-                    while (!lastStackElement.equals("(")) {
-                        polishNotation.addLast(lastStackElement);
-                        lastStackElement = stack.pollFirst();
-                    }
-                    startNumber = false;
-                    break;
-                default:
-                    if (n.matches("[0-9]")) {
-                        if (startNumber) {
-                            String firstPart = polishNotation.pollLast();
-                            polishNotation.addLast(firstPart + n);
-                        } else {
-                            polishNotation.addLast(n);
+                        startNumber = false;
+                        break;
+                    case ")":
+                        String lastStackElement = stack.pollFirst();
+                        while (!lastStackElement.equals("(")) {
+                            polishNotation.addLast(lastStackElement);
+                            lastStackElement = stack.pollFirst();
                         }
-                        startNumber = true;
-                    } else {
-                        throw new IllegalArgumentException();
-                    }
+                        startNumber = false;
+                        break;
+                    default:
+                        if (n.matches("[0-9]")) {
+                            if (startNumber) {
+                                String firstPart = polishNotation.pollLast();
+                                polishNotation.addLast(firstPart + n);
+                            } else {
+                                polishNotation.addLast(n);
+                            }
+                            startNumber = true;
+                        } else {
+                            throw new IllegalArgumentException();
+                        }
+                }
             }
+            while (!stack.isEmpty()) {
+                polishNotation.addLast(stack.pollFirst());
+            }
+            result = readPolishNotation();
+        } catch (Exception ex) {
+            throw new IllegalArgumentException();
         }
-        while (!stack.isEmpty()) {
-            polishNotation.addLast(stack.pollFirst());
-        }
-        return readPolishNotation();
+        return result;
     }
 
     private double readPolishNotation() {

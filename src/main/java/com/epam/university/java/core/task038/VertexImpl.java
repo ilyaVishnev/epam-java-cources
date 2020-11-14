@@ -46,12 +46,11 @@ public class VertexImpl implements Vertex {
         }
         VertexImpl vertex = (VertexImpl) o;
         return x == vertex.x
-                && y == vertex.y
-                && id == vertex.id;
+                && y == vertex.y;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, id);
+        return Objects.hash(x, y);
     }
 }

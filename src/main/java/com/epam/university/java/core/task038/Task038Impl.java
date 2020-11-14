@@ -9,14 +9,25 @@ public class Task038Impl implements Task038 {
 
     @Override
     public Graph invokeActions(Graph sourceGraph, Collection<GraphAction> actions) {
+        if (sourceGraph == null
+                || actions == null
+                || actions.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         for (GraphAction action : actions) {
             action.run(sourceGraph);
+            if (((GraphImpl) sourceGraph).isHasWrongVertex()) {
+                throw new IllegalArgumentException();
+            }
         }
         return sourceGraph;
     }
 
     @Override
     public Collection<Vertex> getShortestPath(Graph graph, int startId, int endId) {
+        if (graph == null) {
+            throw new IllegalArgumentException();
+        }
         GraphImpl myGraph = (GraphImpl) graph;
         List<List<Vertex>> vertexList = new ArrayList<>();
         List<Vertex> vertices = new ArrayList<>();

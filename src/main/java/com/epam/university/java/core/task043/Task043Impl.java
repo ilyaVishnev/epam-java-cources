@@ -60,7 +60,7 @@ public class Task043Impl implements Task043 {
         graph.put("N", Arrays.asList("D", "K"));
         graph.put("M", Arrays.asList("G", "O"));
         graph.put("S", Arrays.asList("H", "V"));
-        graph.put("U", Arrays.asList("F"));
+        graph.put("U", Arrays.asList("F","U:"));
         graph.put("R", Arrays.asList("L"));
         graph.put("W", Arrays.asList("P", "J"));
         graph.put("D", Arrays.asList("B", "X"));
@@ -68,6 +68,14 @@ public class Task043Impl implements Task043 {
         graph.put("G", Arrays.asList("Z", "Q"));
         graph.put("Z", Arrays.asList("7", "COMMA"));
         graph.put("COMMA", Arrays.asList("EMPTY", ","));
+        graph.put("H", Arrays.asList("5", "4"));
+        graph.put("V", Arrays.asList("S^", "3"));
+        graph.put("U:", Arrays.asList("D-", "2"));
+        graph.put("J", Arrays.asList("J-", "1"));
+        graph.put("B", Arrays.asList("6"));
+        graph.put("O", Arrays.asList("O:","CH"));
+        graph.put("O:", Arrays.asList("8"));
+        graph.put("CH", Arrays.asList("9", "0"));
     }
 
     @Override

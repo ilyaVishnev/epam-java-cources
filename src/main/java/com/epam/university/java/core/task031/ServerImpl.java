@@ -22,6 +22,7 @@ public class ServerImpl implements Server {
     private volatile List<Socket> sockets = new ArrayList<>();
     private int index = 0;
     private Listener listener = new Listener();
+    private volatile boolean illigal = false;
 
     /**
      * constructor.
@@ -39,23 +40,9 @@ public class ServerImpl implements Server {
         try {
             Thread.sleep(100);
             Iterator<Socket> iterator = sockets.iterator();
-            while (iterator.hasNext()) {
-                try {
-                    in = new BufferedReader(new InputStreamReader(iterator.next()
-                            .getInputStream()));
-                    try {
-                        String input;
-                        while (in.ready()) {
-                            message.add(in.readLine());
-                        }
-                        in.close();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    System.out.println();
-                }
-            }
+            Reader reader = new Reader(iterator);
+            reader.start();
+            reader.join();
         } catch (Exception ex) {
             System.out.println();
         }
@@ -72,12 +59,16 @@ public class ServerImpl implements Server {
 
     @Override
     public void stop() {
+        this.readMessage();
         stop = true;
         try {
             if (serverSocket != null) {
                 serverSocket.close();
             }
             stop = true;
+            if (illigal) {
+                throw new IllegalArgumentException();
+            }
         } catch (Exception ex) {
             System.out.println();
         }
@@ -100,28 +91,34 @@ public class ServerImpl implements Server {
 
     class Reader extends Thread {
 
-        private Socket socket;
+        private Iterator<Socket> iterator;
 
-        public Reader(Socket socket) {
-            this.socket = socket;
+        public Reader(Iterator<Socket> iterator) {
+            this.iterator = iterator;
         }
 
         @Override
         public void run() {
-            try {
-                in = new BufferedReader(new InputStreamReader(socket
-                        .getInputStream()));
+            while (iterator.hasNext()) {
                 try {
-                    String input;
-                    while (in.ready()) {
-                        message.add(in.readLine());
+                    in = new BufferedReader(new InputStreamReader(iterator.next()
+                            .getInputStream()));
+                    try {
+                        String input;
+                        while (in.ready()) {
+                            String s = in.readLine();
+                            if (s == null) {
+                                illigal = true;
+                            }
+                            message.add(s);
+                        }
+                        in.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
                     }
-                    in.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                } catch (Exception e) {
+                    System.out.println();
                 }
-            } catch (Exception e) {
-                System.out.println();
             }
         }
     }

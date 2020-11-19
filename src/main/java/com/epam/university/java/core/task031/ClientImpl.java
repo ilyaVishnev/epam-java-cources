@@ -9,6 +9,7 @@ public class ClientImpl implements Client {
 
     private Socket socket;
     private volatile PrintWriter out;
+    private volatile boolean illigal = false;
 
     public ClientImpl() {
 
@@ -16,6 +17,9 @@ public class ClientImpl implements Client {
 
     @Override
     public void sendMessage(String message) {
+        if (message == null) {
+            illigal = true;
+        }
         out.println(message);
     }
 
@@ -41,6 +45,9 @@ public class ClientImpl implements Client {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+        if (illigal) {
+            throw new IllegalArgumentException();
         }
     }
 }

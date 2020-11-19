@@ -22,10 +22,11 @@ public class Task005Impl implements Task005 {
         int denominator = 0;
         int numerator = 0;
         double min = Double.MAX_VALUE;
-        for (int i = (int) Math.pow(10, digits - 1); i <= (int) 4 * Math.pow(10, digits - 1); i++) {
+        for (int i = (int) Math.pow(10, digits - 1);
+             i <= (int) (3.5 * Math.pow(10, digits - 1)); i++) {
             int k = 3 * i;
             int l = 4 * i;
-            for (int j = k; j < Math.pow(10, digits) && j < l; j++) {
+            for (int j = k; j < l && j <= (int) Math.pow(10, digits) - 1; j++) {
                 double myMin = Math.abs((double) j / i - Math.PI);
                 if (myMin < min) {
                     numerator = j;

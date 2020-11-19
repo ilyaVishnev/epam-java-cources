@@ -60,6 +60,7 @@ public class Task029Impl implements Task029 {
             if (!res.isEmpty()) {
                 break;
             }
+            queue.add(word);
         }
         return res;
     }
@@ -112,7 +113,8 @@ public class Task029Impl implements Task029 {
                             || line[j].equals(wordArray[indexW]))) {
                         line[j] = wordArray[indexW++];
                         rows.set(i, String.join("", line));
-                    } else if (indexW == wordArray.length) {
+                    } else if (indexW == wordArray.length
+                            && line[j].equals("+")) {
                         while (!words.isEmpty()) {
                             String next = words.poll();
                             List<String> res = putTheWord(new ArrayList<>(rows),
